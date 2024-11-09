@@ -37,27 +37,4 @@ function trackMood(rating) {
     }
 
     moodChart.update();
-
-    // This is where you would send data to your Python AI model
-    const entry = {
-        date: date,
-        mood: rating,
-        journal: document.getElementById('journal').value
-    };
-
-    // Example endpoint for AI model integration
-    // fetch('/api/analyze', {
-    //     method: 'POST',
-    //     headers: {
-    //         'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(entry)
-    // });
-}
-
-function saveEntry() {
-    const journal = document.getElementById('journal').value;
-    // Here you would typically save to a backend
-    alert('Entry saved successfully!');
-    document.getElementById('journal').value = '';
 }

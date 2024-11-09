@@ -68,7 +68,7 @@
                 if (!getCookie("today_feeling")) {
                     window.location.href = "dailycheckin.html";
                 } else {
-                    document.getElementById("dailycheckintext").textContent = "Check back in tomorrow"
+                    document.getElementById("dailycheckintext").textContent = "Please check back in tomorrow"
                 }
             }
         </script>
@@ -79,13 +79,12 @@
         <img id="panda" src="Panda_resized.png">
 
         <!-- Paragraph of text -->
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur sit amet
-            velit a tortor lacinia gravida vel a ipsum. Integer ac orci nec leo suscipit
-            placerat. Phasellus euismod, sapien nec interdum pretium, metus ipsum dictum
-            justo, vitae volutpat sapien nulla eu ante.
-        </p>
+        <p id="summary"> </p>
     </div>
+
+    <script>
+        document.getElementById("summary").textContent = "The top 3 factors contributing to your stress are: ";
+    </script>
 
     <style>
         #panda {
@@ -121,6 +120,15 @@
         <div class="chart-container">
             <canvas id="moodChart"></canvas>
         </div>
+    </div>
+
+    <div class="card">
+        <h2>Journey Map</h2>
+        <img src="Designer.jpeg">
+    </div>
+
+    <div class="card" class="image-text-container">
+        <button>Goals</button>
     </div>
 </div>
 
