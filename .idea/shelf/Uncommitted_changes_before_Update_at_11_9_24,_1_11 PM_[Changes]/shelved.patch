@@ -1,0 +1,438 @@
+Index: .gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.gitignore b/.gitignore
+new file mode 100644
+--- /dev/null	(date 1731168675130)
++++ b/.gitignore	(date 1731168675130)
+@@ -0,0 +1,15 @@
++*.iml
++.gradle
++/local.properties
++/.idea/caches
++/.idea/libraries
++/.idea/modules.xml
++/.idea/workspace.xml
++/.idea/navEditor.xml
++/.idea/assetWizardSettings.xml
++.DS_Store
++/build
++/captures
++.externalNativeBuild
++.cxx
++local.properties
+Index: index.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/index.html b/index.html
+new file mode 100644
+--- /dev/null	(date 1731175822084)
++++ b/index.html	(date 1731175822084)
+@@ -0,0 +1,77 @@
++<!DOCTYPE html>
++<html lang="en">
++<head>
++    <meta charset="UTF-8">
++    <meta name="viewport" content="width=device-width, initial-scale=1.0">
++    <title>Stress Tracker</title>
++    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
++    <link rel="stylesheet" href="styles.css">
++
++    <script> //startup form
++        function getCookie(name) {
++            const value = "; " + document.cookie;
++            const parts = value.split("; " + name + "=");
++            if (parts.length === 2) return parts.pop().split(";").shift();
++        }
++
++        // Function to display a message with the name from the cookie
++        function displayMessage() {
++            var name = getCookie("username"); // Get the 'username' cookie
++            var messageElement = document.getElementById("welcome-message");
++
++            messageElement.textContent = "Hello, " + name + "! Welcome back!";
++        }
++
++        // Open entrance form if its the first time using the app, else display welcome back message
++        window.onload = function() {
++            if(!getCookie("username")) window.location.href = "entrance.html";
++            displayMessage(); // Display message with cookie value
++        };
++    </script>
++
++</head>
++<body>
++<div class="container">
++    <header>
++        <h1>Stress Tracker</h1>
++
++        <p id="welcome-message"></p>
++    </header>
++
++    <div class="card">
++        <div class="breathing-circle"></div>
++        <p style="text-align: center;">Take a moment to breathe</p>
++        <button class="game-btn" onclick="game()">🎮</button>
++    </div>
++
++    <div class="card">
++        <h2>How are you feeling today?</h2>
++        <div class="mood-tracker">
++            <button class="mood-btn" onclick="trackMood(1)">😔</button>
++            <button class="mood-btn" onclick="trackMood(2)">😐</button>
++            <button class="mood-btn" onclick="trackMood(3)">🙂</button>
++            <button class="mood-btn" onclick="trackMood(4)">😊</button>
++            <button class="mood-btn" onclick="trackMood(5)">🌟</button>
++        </div>
++    </div>
++
++    <div class="card">
++        <div class="input-group">
++            <label for="journal">Journal Entry</label>
++            <textarea id="journal" placeholder="Write your thoughts here..."></textarea>
++        </div>
++        <button onclick="saveEntry()">Save Entry</button>
++    </div>
++
++    <div class="card">
++        <h2>Mood Trends</h2>
++        <div class="chart-container">
++            <canvas id="moodChart"></canvas>
++        </div>
++    </div>
++</div>
++
++<script src="functionality.js"></script>
++
++</body>
++</html>
+\ No newline at end of file
+Index: styles.css
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/styles.css b/styles.css
+new file mode 100644
+--- /dev/null	(date 1731169616350)
++++ b/styles.css	(date 1731169616350)
+@@ -0,0 +1,151 @@
++:root {
++    --primary: #7BB5B3;
++    --secondary: #9DC7C5;
++    --background: #F5F9F9;
++    --text: #2C3E50;
++    --shadow: rgba(0, 0, 0, 0.1);
++}
++
++* {
++    margin: 0;
++    padding: 0;
++    box-sizing: border-box;
++    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
++}
++
++body {
++    background-color: var(--background);
++    color: var(--text);
++    line-height: 1.6;
++}
++
++.container {
++    max-width: 600px;
++    margin: 0 auto;
++    padding: 20px;
++}
++
++header {
++    text-align: center;
++    margin-bottom: 2rem;
++    animation: fadeIn 1s ease-in;
++}
++
++h1 {
++    color: var(--primary);
++    font-size: 1.8rem;
++    margin-bottom: 0.5rem;
++}
++
++.card {
++    background: white;
++    border-radius: 15px;
++    padding: 20px;
++    margin-bottom: 20px;
++    box-shadow: 0 4px 6px var(--shadow);
++    transform: translateY(0);
++    transition: transform 0.3s ease;
++    animation: slideUp 0.5s ease-out;
++}
++
++.card:hover {
++    transform: translateY(-5px);
++}
++
++.mood-tracker {
++    display: flex;
++    justify-content: space-around;
++    margin: 20px 0;
++}
++
++.mood-btn {
++    background: none;
++    border: none;
++    cursor: pointer;
++    padding: 10px;
++    transition: transform 0.2s ease;
++    font-size: 2rem;
++}
++
++.mood-btn:hover {
++    transform: scale(1.2);
++}
++
++.input-group {
++    margin-bottom: 1rem;
++}
++
++label {
++    display: block;
++    margin-bottom: 0.5rem;
++    color: var(--text);
++}
++
++textarea {
++    width: 100%;
++    padding: 12px;
++    border: 2px solid var(--secondary);
++    border-radius: 8px;
++    resize: vertical;
++    min-height: 100px;
++    background: var(--background);
++    color: var(--text);
++    transition: border-color 0.3s ease;
++}
++
++textarea:focus {
++    outline: none;
++    border-color: var(--primary);
++}
++
++button {
++    background-color: var(--primary);
++    color: white;
++    border: none;
++    padding: 12px 24px;
++    border-radius: 8px;
++    cursor: pointer;
++    width: 100%;
++    font-size: 1rem;
++    transition: background-color 0.3s ease;
++}
++
++button:hover {
++    background-color: var(--secondary);
++}
++
++.chart-container {
++    margin-top: 2rem;
++    height: 300px;
++}
++
++@keyframes fadeIn {
++    from { opacity: 0; }
++    to { opacity: 1; }
++}
++
++@keyframes slideUp {
++    from {
++        opacity: 0;
++        transform: translateY(20px);
++    }
++    to {
++        opacity: 1;
++        transform: translateY(0);
++    }
++}
++
++.breathing-circle {
++    width: 100px;
++    height: 100px;
++    background: var(--primary);
++    border-radius: 50%;
++    margin: 20px auto;
++    animation: breathe 4s infinite ease-in-out;
++}
++
++@keyframes breathe {
++    0% { transform: scale(1); }
++    50% { transform: scale(1.2); }
++    100% { transform: scale(1); }
++}
+\ No newline at end of file
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+new file mode 100644
+--- /dev/null	(date 1731169666151)
++++ b/.idea/vcs.xml	(date 1731169666151)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="VcsDirectoryMappings">
++    <mapping directory="" vcs="Git" />
++  </component>
++</project>
+\ No newline at end of file
+Index: functionality.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/functionality.js b/functionality.js
+new file mode 100644
+--- /dev/null	(date 1731169872005)
++++ b/functionality.js	(date 1731169872005)
+@@ -0,0 +1,63 @@
++// Initialize mood data
++let moodData = {
++    labels: [],
++    datasets: [{
++        label: 'Mood Rating',
++        data: [],
++        borderColor: '#7BB5B3',
++        tension: 0.4
++    }]
++};
++
++// Initialize chart
++const ctx = document.getElementById('moodChart').getContext('2d');
++const moodChart = new Chart(ctx, {
++    type: 'line',
++    data: moodData,
++    options: {
++        responsive: true,
++        scales: {
++            y: {
++                beginAtZero: true,
++                max: 5
++            }
++        }
++    }
++});
++
++function trackMood(rating) {
++    const date = new Date().toLocaleDateString();
++    moodData.labels.push(date);
++    moodData.datasets[0].data.push(rating);
++
++    // Keep only last 7 days
++    if (moodData.labels.length > 7) {
++        moodData.labels.shift();
++        moodData.datasets[0].data.shift();
++    }
++
++    moodChart.update();
++
++    // This is where you would send data to your Python AI model
++    const entry = {
++        date: date,
++        mood: rating,
++        journal: document.getElementById('journal').value
++    };
++
++    // Example endpoint for AI model integration
++    // fetch('/api/analyze', {
++    //     method: 'POST',
++    //     headers: {
++    //         'Content-Type': 'application/json',
++    //     },
++    //     body: JSON.stringify(entry)
++    // });
++}
++
++function saveEntry() {
++    const journal = document.getElementById('journal').value;
++    // Here you would typically save to a backend
++    alert('Entry saved successfully!');
++    document.getElementById('journal').value = '';
++}
+\ No newline at end of file
+Index: entrance.html
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/entrance.html b/entrance.html
+new file mode 100644
+--- /dev/null	(date 1731175850563)
++++ b/entrance.html	(date 1731175850563)
+@@ -0,0 +1,61 @@
++<!DOCTYPE html>
++<html lang="en">
++<head>
++    <meta charset="UTF-8">
++    <title>Entrance Questionnaire</title>
++</head>
++<link rel="stylesheet" href="styles.css">
++
++<body>
++<div class="card">
++    <div class="questionnaire" id="questionnaireForm">
++        <h1>Stress Tracker Entrance Questionnaire</h1>
++            <div class="card">
++                <div class="form-group">
++                    <label for="getName">What is your Name?</label>
++                    <input type="text" id="getName" required placeholder="Enter your name">
++                </div>
++            </div>
++
++            <div class="card">
++                <div class="form-group">
++                    <label for="age">Your Age</label>
++                    <input type="number" id="age" required min="13" max="120" placeholder="Enter your age">
++                </div>
++            </div>
++
++
++            <div class="card" class="form-group">
++                <label for="gender">Gender Identity</label>
++                <select id="gender" required>
++                    <option value="">Select gender</option>
++                    <option value="male">Male</option>
++                    <option value="female">Female</option>
++                    <option value="nonbinary">Non-binary</option>
++                    <option value="other">Other</option>
++                    <option value="prefer-not">Prefer not to say</option>
++                </select>
++            </div>
++
++            <button onclick="buttonClicked()">Create Account</button>
++    </div>
++</div>
++
++<script>
++    function buttonClicked() {
++        let date = new Date();
++        date.setFullYear(date.getFullYear() + 10);
++
++        const name = document.getElementById("getName").value;
++        const age = document.getElementById("age").value;
++        const gender = document.getElementById("gender").value;
++
++        document.cookie = "username=" + name + "; expires=" + date + "path=/"
++        document.cookie = "age=" + age + "; expires=" + date + "path=/"
++        document.cookie = "gender=" + gender + "; expires=" + date + "path=/"
++        window.location.href = "index.html";
++    }
++</script>
++
++</body>
++</html>
+\ No newline at end of file

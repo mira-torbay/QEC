@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stress Tracker</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+
+    <script> //startup form
+        function getCookie(name) {
+            const value = "; " + document.cookie;
+            const parts = value.split("; " + name + "=");
+            if (parts.length === 2) return parts.pop().split(";").shift();
+        }
+
+        // Function to display a message with the name from the cookie
+        function displayMessage() {
+            var name = getCookie("username"); // Get the 'username' cookie
+            var messageElement = document.getElementById("welcome-message");
+
+            messageElement.textContent = "Hello, " + name + "! Welcome back!";
+        }
+
+        // Open entrance form if it's the first time using the app, else display welcome back message
+        window.onload = function() {
+            if(!getCookie("username")) window.location.href = "entrance.html";
+            displayMessage(); // Display message with cookie value
+
+            if (getCookie("today_feeling") && getCookie("today_date") !== "done") {
+                trackMood(getCookie("today_feeling"));
+                document.cookie = "today_date=done" + ";path=/"
+            }
+        };
+    </script>
+
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Stress Tracker</h1>
+
+        <p id="welcome-message"></p>
+    </header>
+
+    <div class="card">
+        <h2>How are you feeling today?</h2>
+
+        <div class="mood-tracker">
+            <button class="mood-btn" >😔</button>
+            <button class="mood-btn" >😐</button>
+            <button class="mood-btn" >🙂</button>
+            <button class="mood-btn" >😊</button>
+            <button class="mood-btn" >🌟</button>
+        </div>
+
+        <button id="dailycheck" onclick="dailyCheckInClicked()">Daily Check In</button>
+
+        <p id="dailycheckintext"></p>
+        <style>
+            #dailycheckintext {
+                color: brown;
+            }
+        </style>
+
+        <script>
+            function dailyCheckInClicked() {
+                if (!getCookie("today_feeling")) {
+                    window.location.href = "dailycheckin.html";
+                } else {
+                    document.getElementById("dailycheckintext").textContent = "Please check back in tomorrow"
+                }
+            }
+        </script>
+    </div>
+
+    <div class="card" class="image-text-container">
+        <!-- Image -->
+        <img id="panda" src="Panda_resized.png">
+
+        <!-- Paragraph of text -->
+        <p id="summary"> </p>
+    </div>
+
+    <script>
+        document.getElementById("summary").textContent = "The top 3 factors contributing to your stress are: ";
+    </script>
+
+    <style>
+        #panda {
+            width: 10%;
+        }
+
+        /* Container for the image and text */
+        .image-text-container {
+            display: flex;               /* Use flexbox to align items side by side */
+            align-items: center;         /* Vertically center the items */
+            justify-content: start;      /* Align items to the left */
+            gap: 20px;                   /* Add space between the image and the text */
+        }
+
+        /* Style for the image */
+        .image-text-container img {
+            width: 10%;                /* Set a fixed width for the image */
+            height: auto;                /* Maintain the aspect ratio of the image */
+            border-radius: 2px;          /* Optional: Add rounded corners to the image */
+        }
+
+        /* Style for the text paragraph */
+        .image-text-container p {
+            font-size: 18px;             /* Set font size for the paragraph */
+            color: #333;                 /* Set text color */
+            line-height: 1.6;            /* Improve readability */
+            max-width: 500px;            /* Limit text width */
+        }
+    </style>
+
+    <div class="card">
+        <h2>Mood Trends</h2>
+        <div class="chart-container">
+            <canvas id="moodChart"></canvas>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Journey Map</h2>
+        <img src="Designer.jpeg">
+    </div>
+
+    <div class="card" class="image-text-container">
+        <button>Goals</button>
+    </div>
+</div>
+
+<script src="functionality.js"></script>
+
+</body>
+</html>

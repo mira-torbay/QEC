@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Daily Check-In</title>
+</head>
+<link rel="stylesheet" href="styles.css">
+
+<body>
+<div class="card">
+    <div class="questionnaire" id="questionnaireForm">
+        <h1>Daily Questionnaire?</h1>
+        <div class="card">
+            <div class="form-group">
+
+
+
+                <label for="slider">How do you feel today?</label>
+                <input type="range" id="slider" min="1" max="10" value="1" step="1">
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="form-group">
+                <h3>What did you do today?</h3>
+
+                <!-- Checklist items -->
+                <label><input type="checkbox" value="Work" onchange="showSelectedItems()"> Work</label><br>
+                <label><input type="checkbox" value="School" onchange="showSelectedItems()"> School</label><br>
+                <label><input type="checkbox" value="Coffee" onchange="showSelectedItems()"> Coffee</label><br>
+                <label><input type="checkbox" value="Social Activity" onchange="showSelectedItems()"> Social Activity</label><br>
+            </div>
+        </div>
+
+        <button onclick="buttonClicked()">Done</button>
+    </div>
+</div>
+
+<script>
+    function buttonClicked() {
+        let date = new Date();
+        date.setFullYear(date.getFullYear());
+        let expDate = new Date();
+        expDate.setFullYear(expDate.getFullYear() + 10);
+        let tmw = new Date();
+        tmw.setDate(tmw.getDate() + 1)
+
+        const days_feeling = document.getElementById("slider").value;
+
+        document.cookie = "today_date=" + date + "; expires=" + tmw + "path=/"
+        document.cookie = "today_feeling=" + days_feeling + "; expires=" + tmw + "path=/"
+        window.location.href = "index.html";
+    }
+</script>
+
+</body>
+</html>
