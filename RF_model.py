@@ -102,6 +102,19 @@ result['predicted_stress_level'] = predictions
 
 print(result[['timestamp', 'heart_rate', 'sleep_duration', 'skin_temp', 'caffeine', 'blood_oxygen', 'predicted_stress_level']])
 
+print("Top 3 Factors Affecting Stress:")
+i = 0
+for j, row in factor_importances.iterrows():
+    factor = row['Factor']
+    if factor == 'prev_stress_level':  # Skip if the factor is 'prev_stress_level'
+        continue
+    if i < 3:
+        print(f"{i + 1}. {factor}")
+        i += 1
+    else:
+        break
+
+
 # plot Actual vs Predicted Stress Levels
 plt.figure(figsize=(10, 6))
 plt.scatter(y_test, predictions, alpha=0.7, edgecolors="w", linewidth=0.5)
