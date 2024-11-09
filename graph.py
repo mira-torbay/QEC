@@ -4,10 +4,16 @@ import seaborn as sns
 
 # read .csv
 # load .csv and parse the timestamp as a datetime
-data = pd.read_csv("example.csv", parse_dates=['timestamp'])
+data = pd.read_csv("example_random_with_trends.csv", parse_dates=['timestamp'])
 
 # set the timestamp as the index
 data.set_index('timestamp', inplace=True)
+
+# fill in missing values
+data['sleep_duration'] = data['sleep_duration'].fillna(method='ffill')  # for sleep duration, caffeine and stress level, replace missing value with most recent
+data['caffeine'] = data['caffeine'].fillna(method='ffill')
+data = data.dropna(subset=['sleep_duration'])  # drop rows if NaNs still present (no value to use for ffill)
+data = data.dropna(subset=['caffeine'])
 
 # Plotting settings
 sns.set(style="whitegrid")  # Set the style of the plots
