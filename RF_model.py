@@ -4,7 +4,7 @@ from sklearn.preprocessing import StandardScaler
 
 # read .csv
 # load .csv and parse the timestamp as a datetime
-data = pd.read_csv("example_random.csv", parse_dates=['timestamp'])
+data = pd.read_csv("example_random_with_trends.csv", parse_dates=['timestamp'])
 
 # set the timestamp as the index
 data.set_index('timestamp', inplace=True)
